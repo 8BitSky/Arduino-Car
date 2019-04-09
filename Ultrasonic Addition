@@ -1,0 +1,81 @@
+int Sonic_Time_out = 3000;
+
+void setup()
+{
+  pinMode(12, OUTPUT); //Motor A
+  pinMode(13, OUTPUT); //Motor B
+  pinMode(8, OUTPUT);  //Ultrasonic Trigger
+  pinMode(9, INPUT);  //Ultrasonic Echo
+  pinMode(0, OUTPUT);  //Ultrasonic Reset
+}
+
+void loop()
+{
+//Ask the question: Is there space to move forward?
+  if (Sonic_Timing()/29/2 >= 30) {
+  //If yes, move forward
+    Forward();
+  } else {
+  //If no, sound buzzer, stop, turn right, exit loop
+    digitalWrite(buzzer,HIGH);delay(500);digitalWrite(buzzer,LOW);
+    Stop();
+    delay(500);
+    Right();
+    delay(500);
+    return;
+  }
+}
+
+//NOTE: You may need to change the HIGH/LOW for the following statements depending on orientation of chassis
+
+void Forward(){
+  digitalWrite(12, HIGH);
+  analogWrite(10, 200);
+  digitalWrite(13, LOW);
+  analogWrite(11, 200);
+}
+
+void Backward(){
+  digitalWrite(12, LOW);
+  analogWrite(10, 200);
+  digitalWrite(13, HIGH);
+  analogWrite(11, 200);
+}
+
+void Left(){
+  digitalWrite(12, HIGH);
+  analogWrite(10, 200);
+  digitalWrite(13, HIGH);
+  analogWrite(11, 200);
+}
+
+void Right(){
+  digitalWrite(12, LOW);
+  analogWrite(10, 200);
+  digitalWrite(13, LOW);
+  analogWrite(11, 200);
+}  
+
+void Stop(){
+  digitalWrite(12, LOW);
+  analogWrite(10, 0);
+  digitalWrite(13, LOW);
+  analogWrite(11, 0);
+}  
+
+long Sonic_Timing(){
+  digitalWrite(8, LOW);
+  delayMicroseconds(2);
+  digitalWrite(8, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(8, LOW);
+  long duration = pulseIn(9,HIGH,Sonic_Time_out);
+  if ( duration == 0 ){
+    duration = Sonic_Time_out;
+    digitalWrite(0, HIGH);
+    delay(25);
+    digitalWrite(0 ,LOW);
+    delay(225);
+  }
+  return duration;
+}
