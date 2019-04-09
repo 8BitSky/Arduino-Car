@@ -1,0 +1,39 @@
+#include <IRremote.h>
+
+const int RECV_PIN = 6;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+
+void setup(){
+  irrecv.enableIRIn();
+  irrecv.blink13(true);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+}
+
+void loop(){
+    if (irrecv.decode(&results)){  
+        switch(results.value){    //  When button 1 is pressed
+          case 0xFF30CF: // FF30CF represents the button on the remote for key 1, replace with your chosen code/input for FORWARD
+          Forward();  // robot car will move forward in response to code being pressed
+          case 0xFF30CF: // FF30CF represents the button on the remote for key 1, replace with your chosen code/input for STOP
+          Stop();
+}
+
+void Forward() {
+  digitalWrite(12, HIGH);
+  analogWrite(10, 200);
+  digitalWrite(13, LOW);
+  analogWrite(11, 200);
+  delay(500);
+  return;
+}
+
+void Stop() {
+  digitalWrite(12, LOW);
+  analogWrite(10, 0);
+  digitalWrite(13, LOW);
+  analogWrite(11, 0);
+  delay(500);
+  return;
+}
