@@ -1,0 +1,29 @@
+void setup()
+{
+  pinMode(12, OUTPUT); //Motor A
+  pinMode(13, OUTPUT); //Motor B
+}
+
+void loop()
+{
+Forward();
+delay(500);
+Backward();
+delay(500);
+}
+
+//NOTE: You may need to change the HIGH/LOW for the following statements depending on orientation of chassis
+
+void Forward(){
+  digitalWrite(12, HIGH);
+  analogWrite(10, 200);
+  digitalWrite(13, LOW);
+  analogWrite(11, 200);
+}
+
+void Backward(){
+  digitalWrite(12, LOW);
+  analogWrite(10, 200);
+  digitalWrite(13, HIGH);
+  analogWrite(11, 200);
+}
