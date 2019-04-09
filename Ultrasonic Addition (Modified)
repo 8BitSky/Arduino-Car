@@ -1,0 +1,83 @@
+int Sonic_Time_out = 3000;
+const int buzzer = 4; 
+
+//Pins for motor control
+const int motADir = 12; //Motor A Direction
+const int motASpe = 10; //Motor A Speed
+//Pins for motor B 
+const int motBDir = 13; //Motor A Direction
+const int motBSpe = 11; //Motor A Speed
+//Variables for motor control
+const int carSpeedHigh = 150; //initial speed for car set bewteen 0-255
+const int carSpeedLow = 100; //initial speed for car set bewteen 0-255
+
+void setup()
+{
+  pinMode(motADir, OUTPUT); 
+  pinMode(motBDir, OUTPUT); 
+  pinMode(8, OUTPUT);
+  pinMode(9, INPUT);
+  pinMode(0, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+
+void loop()
+{
+  if (Sonic_Timing()/29/2 >= 30) {
+Forward();
+  } else {
+    digitalWrite(buzzer,HIGH);delay(500);digitalWrite(buzzer,LOW);
+Stop();
+Backward();
+delay(500);
+Right();
+delay(1000);
+return;
+  }
+
+}
+
+long Sonic_Timing(){
+  digitalWrite(8, LOW);
+  delayMicroseconds(2);
+  digitalWrite(8, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(8, LOW);
+  long duration = pulseIn(9,HIGH,Sonic_Time_out);
+  if ( duration == 0 ){
+    duration = Sonic_Time_out;
+    digitalWrite(0, HIGH);
+    delay(25);
+    digitalWrite(0 ,LOW);
+    delay(225);
+  }
+  return duration;
+}
+
+void Movement(int mADirection, int mBDirection, int mSpeed){
+  digitalWrite(motADir, mADirection);
+  analogWrite(motASpe, mSpeed);
+  digitalWrite(motBDir, mBDirection);
+  analogWrite(motBSpe, mSpeed);
+}
+
+void Forward(){
+  Movement(LOW, HIGH, carSpeedHigh); 
+}
+
+void Backward(){
+  Movement(HIGH, LOW, carSpeedHigh); 
+}
+
+void Left(){
+ Movement(HIGH, HIGH, carSpeedLow); 
+}
+
+void Right(){
+ Movement(LOW, LOW, carSpeedLow); 
+}  
+
+void Stop(){
+ Movement(LOW, LOW, 0); 
+}  
