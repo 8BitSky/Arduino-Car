@@ -1,3 +1,4 @@
+//Must install NewPing library through Arduino
 #include <NewPing.h>
 
 #define TRIGGER_PIN  7  // Arduino pin tied to trigger pin on the ultrasonic sensor.
