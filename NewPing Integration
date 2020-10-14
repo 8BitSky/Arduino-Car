@@ -18,6 +18,8 @@ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 void setup() {
   pinMode(12, OUTPUT); //Set Motor A; these pins are defined by hardware
   pinMode(13, OUTPUT); //Set Motor B; these pins are defined by hardware
+  pinMode(ECHO_PIN, INPUT);    // 
+  pinMode(TRIGGER_PIN, OUTPUT);   // 
 }
 
 
